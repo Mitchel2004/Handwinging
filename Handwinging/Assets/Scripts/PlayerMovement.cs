@@ -4,37 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField][Range(0, 1)] private float throttle = 1f;
-    private Vector3 gravity = new Vector3(0, -9.81f, 0);
+    [Range(0, 1)] public float throttle = 1f;
+    private Vector3 gravity = new Vector3(0, -9.8f, 0);
 
-    private Vector3 velocity;
     [SerializeField] private float speed;
-
-
-    int pitch = 0; // X
-    int yaw = 0; // Y
-    int roll = 0; // Z
+    private Vector3 velocity;
 
     private void Update()
     {
+        LiftHandler();
+        RollHandler();
+        PitchHandler();
         ThrustHandler();
-        RotateAngle();
-    }
-
-    private void ThrustHandler()
-    {
-        velocity += gravity * Time.deltaTime;
-
-        Vector3 thrust = speed * Vector3.forward;
-        Vector3 lift = (-gravity + -velocity) * throttle;
-        
-        velocity += thrust * Time.deltaTime;
-        velocity += lift * Time.deltaTime;
-        
-        transform.position += velocity * Time.deltaTime;
-        Debug.DrawRay(transform.position, velocity, Color.red);
-
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, velocity, Time.deltaTime, 0));
     }
 
     private float GetThrottle()
@@ -42,13 +23,43 @@ public class PlayerMovement : MonoBehaviour
         return 0;
     }
 
-    private void RotateAngle()
+    private void LiftHandler()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            
-        }
+        velocity += gravity * Time.deltaTime;
 
-        transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime);
+        Vector3 lift = (-gravity + -velocity) * throttle;
+        
+        velocity += lift * Time.deltaTime;
+        
+        transform.position += velocity * Time.deltaTime;
+
+        // transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, velocity, Time.deltaTime, 0));
+    }
+
+    private void RollHandler()
+    {
+        Vector3 direction = (GetComponent<SerialCommunication>().acceleration.x > 0 ? Vector3.right : (GetComponent<SerialCommunication>().acceleration.x == 0 ? Vector3.zero : Vector3.left));
+        Vector3 roll = Mathf.Abs(GetComponent<SerialCommunication>().acceleration.x) * speed * direction;
+
+        transform.position += roll * Time.deltaTime;
+
+        transform.eulerAngles += new Vector3(0, 0, -GetComponent<SerialCommunication>().acceleration.x * 10) * Time.deltaTime;
+    }
+
+    private void PitchHandler()
+    {
+        Vector3 direction = (GetComponent<SerialCommunication>().acceleration.y > 0 ? Vector3.down : (GetComponent<SerialCommunication>().acceleration.y == 0 ? Vector3.zero : Vector3.up));
+        Vector3 pitch = Mathf.Abs(GetComponent<SerialCommunication>().acceleration.y) * speed * direction;
+
+        transform.position += pitch * Time.deltaTime;
+
+        transform.eulerAngles += new Vector3(GetComponent<SerialCommunication>().acceleration.y * 10, 0, 0) * Time.deltaTime;
+    }
+
+    private void ThrustHandler()
+    {
+        Vector3 thrust = Vector3.forward * speed;
+
+        transform.position += thrust * Time.deltaTime;
     }
 }

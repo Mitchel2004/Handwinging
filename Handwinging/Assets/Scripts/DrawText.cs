@@ -5,16 +5,13 @@ using TMPro;
 
 public class DrawText : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI throttleText;
-    private float throttle;
+    [SerializeField] private TextMeshProUGUI ringsValue;
 
-    private void Start()
-    {
-        throttle = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().throttle;
-    }
+    private int rings;
 
-    private void Update()
+    public void AddRing()
     {
-        throttleText.text = $"THR: {(int)(throttle * 100)}%";
+        rings++;
+        ringsValue.text = rings.ToString();
     }
 }

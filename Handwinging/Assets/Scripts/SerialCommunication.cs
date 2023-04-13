@@ -13,6 +13,20 @@ public class SerialCommunication : MonoBehaviour
 
     private void Start()
     {
+        //if(SerialPort.GetPortNames().Length > 0)
+        //{
+        //    foreach(string port in SerialPort.GetPortNames())
+        //    {
+                
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.Log("Receiver Not Found");
+        //}
+
+        print(SerialPort.GetPortNames());
+
         stream.PortName = "COM4";
         stream.BaudRate = 115200;
 

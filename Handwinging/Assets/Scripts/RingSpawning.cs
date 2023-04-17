@@ -4,30 +4,25 @@ using UnityEngine;
 
 public class RingSpawning : MonoBehaviour
 {
-    private DrawText UI;
-
-    private void Start()
-    {
-        UI = GameObject.FindGameObjectWithTag("UI").GetComponent<DrawText>();
-    }
-
     private void Update()
     {
         if(GameObject.FindGameObjectWithTag("Player").transform.position.z > transform.position.z + 10)
         {
             Time.timeScale = 0;
+
+            GameObject.FindGameObjectWithTag("Game Over").SetActive(true);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        UI.AddRing();
+        GameObject.FindGameObjectWithTag("UI").GetComponent<DrawText>().AddRing();
 
-        float randomX = Random.Range(-27.5f, 27.5f);
-        float randomY = Random.Range(11f, 55f);
+        float randomX = Random.Range(-28.6f, 28.6f);
+        float randomY = Random.Range(2.2f, 57.2f);
 
         GameObject newRing = Instantiate(gameObject);
-        newRing.transform.position = new Vector3(randomX, randomY, transform.position.z + 44);
+        newRing.transform.position = new Vector3(randomX, randomY, transform.position.z + 55);
 
         Destroy(gameObject);
     }

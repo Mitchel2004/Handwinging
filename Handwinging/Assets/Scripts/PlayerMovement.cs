@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private float speed;
+    [SerializeField] private float rotationSpeed;
+
     private Transform aircraft;
     private Vector3 acceleration;
 
-    [SerializeField] private float speed;
+    private float currentPitch;
+    private float currentRoll;
 
     private void Start()
     {
@@ -16,37 +20,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        acceleration = GetComponent<SerialCommunication>().acceleration;
+        if(GetComponent<SerialCommunication>().connected)
+        {
+            acceleration = GetComponent<SerialCommunication>().acceleration;
 
-        RollHandler();
-        PitchHandler();
-        ThrustHandler();
-    }
+            float newPitch = currentPitch + acceleration.y * Time.deltaTime;
+            float newRoll = currentRoll + acceleration.x * Time.deltaTime;
 
-    private void RollHandler()
-    {
-        Vector3 direction = acceleration.x > 0 ? Vector3.right : (acceleration.x == 0 ? Vector3.zero : Vector3.left);
-        Vector3 roll = Mathf.Abs(acceleration.x) * speed * direction;
+            currentPitch = Mathf.Clamp(newPitch, -45, 45);
+            currentRoll = Mathf.Clamp(newRoll, -45, 45);
 
-        transform.position += roll * Time.deltaTime;
-
-        aircraft.eulerAngles += new Vector3(0, 0, -acceleration.y * 10) * Time.deltaTime;
-    }
-
-    private void PitchHandler()
-    {
-        Vector3 direction = acceleration.y > 0 ? Vector3.down : (acceleration.y == 0 ? Vector3.zero : Vector3.up);
-        Vector3 pitch = Mathf.Abs(acceleration.y) * speed * direction;
-
-        transform.position += pitch * Time.deltaTime;
-
-        aircraft.eulerAngles += new Vector3(-acceleration.x * 10, 0, 0) * Time.deltaTime;
-    }
-
-    private void ThrustHandler()
-    {
-        Vector3 thrust = Vector3.forward * speed;
-
-        transform.position += thrust * Time.deltaTime;
+            transform.position += speed * Time.deltaTime * new Vector3(currentRoll, -currentPitch, rotationSpeed);
+            aircraft.rotation = Quaternion.Euler(newPitch * rotationSpeed, 0, -newRoll * rotationSpeed);
+        }
     }
 }

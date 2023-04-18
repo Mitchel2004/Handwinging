@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class RingSpawning : MonoBehaviour
 {
+    [SerializeField] private GameObject gameOverScreen;
+
     private void Update()
     {
         if(GameObject.FindGameObjectWithTag("Player").transform.position.z > transform.position.z + 10)
         {
             Time.timeScale = 0;
 
-            GameObject.FindGameObjectWithTag("Game Over").SetActive(true);
+            gameOverScreen.SetActive(true);
         }
     }
 

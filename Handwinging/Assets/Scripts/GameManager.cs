@@ -28,13 +28,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Quit();
+        }
+    }
+
     public void Restart()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<SerialCommunication>().stream.Close();
+
         SceneManager.LoadSceneAsync(0);
     }
 
     public void Quit()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<SerialCommunication>().stream.Close();
+
         Application.Quit();
     }
 }

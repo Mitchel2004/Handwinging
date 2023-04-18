@@ -1335,7 +1335,7 @@ GameObject:
   - component: {fileID: 1679020703}
   m_Layer: 5
   m_Name: Game Over
-  m_TagString: Game Over
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1543,6 +1543,7 @@ GameObject:
   - component: {fileID: 1933853166}
   - component: {fileID: 1933853165}
   - component: {fileID: 1933853164}
+  - component: {fileID: 1933853169}
   - component: {fileID: 1933853168}
   m_Layer: 5
   m_Name: Canvas
@@ -1646,6 +1647,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ringsValue: {fileID: 356739421}
+--- !u!114 &1933853169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933853163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd89490b19ed2f48b15fca9c1cba1c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1975234295
 GameObject:
   m_ObjectHideFlags: 0
@@ -1863,6 +1876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa2199cd97728cc498a311d805f0b81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverScreen: {fileID: 1679020701}
 --- !u!54 &2402187904245051929
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SerialCommunication : MonoBehaviour
 {
-    private SerialPort stream = new SerialPort();
+    public SerialPort stream = new SerialPort();
 
     public bool connected;
     public Vector3 acceleration;
